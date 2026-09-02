@@ -4,7 +4,7 @@
 https://github.com/gDiva-blip/Sick-bae
 
 ## Demo URL
-Coming soon...
+https://simulator.com
 
 ## About
 [Add your project description here]
