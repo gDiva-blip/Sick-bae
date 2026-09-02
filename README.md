@@ -4,7 +4,7 @@
 https://github.com/gDiva-blip/Sick-bae
 
 ## Demo URL
-https://github.com/gDiva-blip/Sick-bae/Readme.md
+https://github.com/gDiva-blip/Sick-bae/Readme.md.main
 
 ## About
 [Add your project description here]
