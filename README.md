@@ -4,8 +4,8 @@
 https://github.com/gDiva-blip/Sick-bae
 
 ## Demo URL
-https://github.com/gDiva-blip/Sick-bae
 
+https://gdiva-blip.github.io/Sick-bae/
 ## About
 Sick Bay is a healthcare support application designed 
 to make it easier for users to access basic health information 
