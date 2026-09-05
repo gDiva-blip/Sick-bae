@@ -1,0 +1,13 @@
+image: gitpod/workspace-full
+
+tasks:
+  - init: |
+      bash .gitpod/setup.sh
+    command: |
+      bash .gitpod/start.sh
+
+ports:
+  - port: 3000
+    onOpen: open-preview
+
+# Optional: prebuilds can be configured in Gitpod settings for this repo
