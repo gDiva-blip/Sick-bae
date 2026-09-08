@@ -9,7 +9,7 @@ https://gdiva-blip.github.io/Sick-bae/
 ## About
 Sick Bay is a healthcare support application designed 
 to make it easier for users to access basic health information 
-and get guidance when they are feeling unwell.]
+and get guidance when they are feeling unwell.
 
 
 ## Usage
