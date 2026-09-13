@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
 import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/data/latest.dart' as tzdata;
 
 class TimezoneClock extends StatefulWidget {
   const TimezoneClock({Key? key}) : super(key: key);
@@ -26,7 +27,7 @@ class _TimezoneClockState extends State<TimezoneClock> {
   @override
   void initState() {
     super.initState();
-    tz.initializeTimeZones();
+    tzdata.initializeTimeZones();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         _currentTime = DateTime.now();
