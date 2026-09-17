@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../providers/symptom_provider.dart';
 import '../data/health_database.dart';
 import 'symptom_details_screen.dart';
+import 'health_guidance_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,7 +15,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _descriptionController =
       TextEditingController();
-
   final TextEditingController _searchController = TextEditingController();
 
   List<String> _filteredSymptoms = [];
@@ -52,103 +52,129 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
 
-    // For now, show the information the user entered.
-    // We will build the symptom-processing system next.
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Your symptoms'),
-          content: Text(
-            'You described:\n\n$description\n\n'
-            'We will use this information to provide general health guidance.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text('OK'),
-            ),
-          ],
-        );
-      },
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => HealthGuidanceScreen(
+          description: description,
+        ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colors = theme.colorScheme;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Sick Bay'),
+        title: const Text(
+          'Sick Bay',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
-        elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Welcome to Sick Bay',
-              style: TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: colors.primaryContainer,
+                borderRadius: BorderRadius.circular(20),
               ),
-            ),
-
-            const SizedBox(height: 8),
-
-            const Text(
-              'Tell us what is going on and get general health guidance.',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey,
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    radius: 28,
+                    backgroundColor: colors.surface,
+                    child: Icon(
+                      Icons.health_and_safety,
+                      size: 30,
+                      color: colors.primary,
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  const Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Welcome to Sick Bay',
+                          style: TextStyle(
+                            fontSize: 23,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF23413D),
+                          ),
+                        ),
+                        SizedBox(height: 5),
+                        Text(
+                          'A calm place to describe how you feel and explore general health guidance.',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Color(0xFF35514D),
+                            height: 1.4,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
 
             const SizedBox(height: 24),
 
-            // Main symptom description section
+            const Text(
+              'How are you feeling?',
+              style: TextStyle(
+                fontSize: 21,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF23413D),
+              ),
+            ),
+
+            const SizedBox(height: 6),
+
+            const Text(
+              'Describe what you are experiencing in your own words.',
+              style: TextStyle(
+                fontSize: 15,
+                color: Color(0xFF52615F),
+              ),
+            ),
+
+            const SizedBox(height: 14),
+
             Card(
-              elevation: 2,
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'What\'s going on?',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-
-                    const SizedBox(height: 8),
-
-                    const Text(
-                      'Describe what you are feeling in your own words.',
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
                     TextField(
                       controller: _descriptionController,
-                      maxLines: 7,
-                      textInputAction: TextInputAction.newline,
+                      maxLines: 6,
                       decoration: InputDecoration(
                         hintText:
-                            'For example: I have had a headache since yesterday and I feel tired...',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                            'For example: I have a headache and feel tired...',
+                        prefixIcon: const Padding(
+                          padding: EdgeInsets.only(bottom: 80),
+                          child: Icon(Icons.edit_note),
                         ),
-                        alignLabelWithHint: true,
+                        filled: true,
+                        fillColor: const Color(0xFFF7FBFA),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(14),
+                          borderSide: BorderSide.none,
+                        ),
                       ),
                     ),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 14),
 
                     SizedBox(
                       width: double.infinity,
@@ -156,15 +182,18 @@ class _HomeScreenState extends State<HomeScreen> {
                         onPressed: _getHealthGuidance,
                         icon: const Icon(Icons.health_and_safety),
                         label: const Text(
-                          'Get Health Guidance',
-                          style: TextStyle(fontSize: 16),
+                          'Get General Guidance',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            vertical: 16,
-                          ),
+                          backgroundColor: colors.primary,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 15),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(14),
                           ),
                         ),
                       ),
@@ -174,27 +203,45 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            const SizedBox(height: 32),
+            const SizedBox(height: 28),
 
-            // Optional symptom explorer
+            Row(
+              children: [
+                const Expanded(
+                  child: Text(
+                    'Explore Symptoms',
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF23413D),
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFB38A),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.touch_app,
+                    color: Color(0xFF6E3D2A),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 6),
+
             const Text(
-              'Explore Symptoms',
+              'Tap a symptom to explore more information.',
               style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                fontSize: 15,
+                color: Color(0xFF52615F),
               ),
             ),
 
-            const SizedBox(height: 8),
-
-            const Text(
-              'You can also browse common symptoms.',
-              style: TextStyle(
-                color: Colors.grey,
-              ),
-            ),
-
-            const SizedBox(height: 16),
+            const SizedBox(height: 14),
 
             TextField(
               controller: _searchController,
@@ -202,8 +249,10 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: InputDecoration(
                 hintText: 'Search symptoms...',
                 prefixIcon: const Icon(Icons.search),
+                filled: true,
+                fillColor: Colors.white,
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(14),
                 ),
               ),
             ),
@@ -211,40 +260,61 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 16),
 
             ..._filteredSymptoms.map((symptom) {
-              return GestureDetector(
-                onTap: () {
-                  context.read<SymptomProvider>().searchSymptom(symptom);
+              return Card(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(12),
+                  onTap: () {
+                    context.read<SymptomProvider>().searchSymptom(symptom);
 
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const SymptomDetailsScreen(),
-                    ),
-                  );
-                },
-                child: Card(
-                  margin: const EdgeInsets.only(bottom: 12),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const SymptomDetailsScreen(),
+                      ),
+                    );
+                  },
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 15,
+                    ),
                     child: Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          symptom.toUpperCase(),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.w500,
+                        Container(
+                          padding: const EdgeInsets.all(9),
+                          decoration: BoxDecoration(
+                            color: colors.primaryContainer,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.medical_information_outlined,
+                            color: colors.primary,
                           ),
                         ),
-                        const Icon(Icons.arrow_forward),
+                        const SizedBox(width: 13),
+                        Expanded(
+                          child: Text(
+                            symptom.toUpperCase(),
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xFF263D3A),
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          size: 17,
+                          color: colors.primary,
+                        ),
                       ],
                     ),
                   ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

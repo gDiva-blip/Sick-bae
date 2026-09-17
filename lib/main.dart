@@ -20,9 +20,20 @@ class SickBayApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Sick Bay',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
-          useMaterial3: true,
-        ),
+  useMaterial3: true,
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: const Color(0xFF5BAFA3),
+    primary: const Color(0xFF5BAFA3),
+    secondary: const Color(0xFFFFB38A),
+    brightness: Brightness.light,
+  ),
+  scaffoldBackgroundColor: const Color(0xFFF7FBFA),
+  appBarTheme: const AppBarTheme(
+    backgroundColor: Colors.white,
+    foregroundColor: Color(0xFF23413D),
+    elevation: 0,
+  ),
+),
         home: const MainNavigation(),
       ),
     );
