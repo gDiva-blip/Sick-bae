@@ -4,7 +4,7 @@ import '../models/symptom_model.dart';
 
 class SymptomProvider extends ChangeNotifier {
   SymptomInfo? _currentSymptom;
-  List<String> _selectedSymptoms = [];
+  final List<String> _selectedSymptoms = [];
 
   SymptomInfo? get currentSymptom => _currentSymptom;
   List<String> get selectedSymptoms => _selectedSymptoms;
