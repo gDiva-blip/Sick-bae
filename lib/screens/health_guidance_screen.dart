@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'get_help_screen.dart';
 
 class HealthGuidanceScreen extends StatelessWidget {
   final String description;
@@ -36,6 +37,18 @@ class HealthGuidanceScreen extends StatelessWidget {
       );
     }
 
+    if (text.contains('fever') || text.contains('hot')) {
+      suggestions.add(
+        'If you have a fever or feel unusually hot, let a trusted adult know and keep track of how you are feeling.',
+      );
+    }
+
+    if (text.contains('dizzy') || text.contains('dizziness')) {
+      suggestions.add(
+        'If you feel dizzy, sit or rest somewhere safe and tell a trusted adult, especially if the feeling continues or becomes worse.',
+      );
+    }
+
     if (text.contains('tired') ||
         text.contains('fatigue') ||
         text.contains('weak')) {
@@ -44,9 +57,19 @@ class HealthGuidanceScreen extends StatelessWidget {
       );
     }
 
-    if (text.contains('pain')) {
+    if (text.contains('pain') ||
+        text.contains('ache') ||
+        text.contains('hurt')) {
       suggestions.add(
-        'Because you mentioned pain, note where it is, when it started, and whether it is changing. A trusted adult or healthcare professional can help you decide what to do next.',
+        'Because you mentioned discomfort or pain, note where it is, when it started, and whether it is changing. A trusted adult or healthcare professional can help you decide what to do next.',
+      );
+    }
+
+    if (text.contains('breath') ||
+        text.contains('breathing') ||
+        text.contains('shortness of breath')) {
+      suggestions.add(
+        'If you are having trouble breathing, tell a trusted adult immediately and seek appropriate medical help rather than relying only on the app.',
       );
     }
 
@@ -59,7 +82,7 @@ class HealthGuidanceScreen extends StatelessWidget {
       );
     }
 
-    return suggestions;
+    return suggestions.take(3).toList();
   }
 
   @override
@@ -85,6 +108,7 @@ class HealthGuidanceScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(18),
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Icon(
                     Icons.health_and_safety,
@@ -94,7 +118,7 @@ class HealthGuidanceScreen extends StatelessWidget {
                   const SizedBox(width: 14),
                   const Expanded(
                     child: Text(
-                      'Here are some general suggestions based on what you described.',
+                      'Thanks for telling us. Here are some general suggestions based on what you described.',
                       style: TextStyle(
                         fontSize: 17,
                         fontWeight: FontWeight.w600,
@@ -121,6 +145,7 @@ class HealthGuidanceScreen extends StatelessWidget {
             const SizedBox(height: 8),
 
             Card(
+              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Text(
@@ -147,36 +172,99 @@ class HealthGuidanceScreen extends StatelessWidget {
 
             const SizedBox(height: 10),
 
-            ...suggestions.map(
-              (suggestion) => Card(
+            ...suggestions.asMap().entries.map(
+              (entry) => Card(
                 margin: const EdgeInsets.only(bottom: 10),
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(7),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFB38A),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.lightbulb_outline,
-                          size: 20,
-                          color: Color(0xFF6E3D2A),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          suggestion,
-                          style: const TextStyle(
-                            fontSize: 15,
-                            height: 1.5,
-                            color: Color(0xFF263D3A),
+                clipBehavior: Clip.antiAlias,
+                child: InkWell(
+                  onTap: () {},
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(7),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFB38A),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.lightbulb_outline,
+                            size: 20,
+                            color: Color(0xFF6E3D2A),
                           ),
                         ),
+                        const SizedBox(width: 12),
+                      Expanded(
+  child: Text(
+    entry.value,
+    style: const TextStyle(
+      fontSize: 15,
+      height: 1.5,
+      color: Color(0xFF263D3A),
+    ),
+  ),
+),
+],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 8),
+
+            Card(
+              color: const Color(0xFFE4F3F0),
+              clipBehavior: Clip.antiAlias,
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const GetHelpScreen(),
+                    ),
+                  );
+                },
+                child: const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.support_agent,
+                        size: 30,
+                        color: Color(0xFF438F84),
+                      ),
+                      SizedBox(width: 14),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Need more help?',
+                              style: TextStyle(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF23413D),
+                              ),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Talk to a trusted adult, school nurse, or healthcare professional.',
+                              style: TextStyle(
+                                fontSize: 14,
+                                height: 1.4,
+                                color: Color(0xFF405552),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 16,
+                        color: Color(0xFF438F84),
                       ),
                     ],
                   ),
