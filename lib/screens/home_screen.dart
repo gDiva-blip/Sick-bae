@@ -83,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(15),
         ),
         child: const Icon(
-          Icons.Icons.heart_broken_rounded,
+          Icons.heart_broken_rounded,
           color: Color(0xFFE77B63),
         ),
       ),
