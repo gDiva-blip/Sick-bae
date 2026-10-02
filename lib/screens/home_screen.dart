@@ -69,12 +69,42 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Sick Bay',
-          style: TextStyle(fontWeight: FontWeight.bold),
+  backgroundColor: const Color(0xFFF6FBF8),
+  foregroundColor: const Color(0xFF153E3A),
+  elevation: 0,
+  centerTitle: false,
+  title: Row(
+    children: [
+      Container(
+        width: 42,
+        height: 42,
+        decoration: BoxDecoration(
+          color: const Color(0xFFFFE1D5),
+          borderRadius: BorderRadius.circular(15),
         ),
-        centerTitle: true,
+        child: const Icon(
+          Icons.Icons.heart_broken_rounded,
+          color: Color(0xFFE77B63),
+        ),
       ),
+      const SizedBox(width: 12),
+      const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Sick Bae',
+            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 19),
+          ),
+          Text(
+            'your health, with a little care',
+            style: TextStyle(fontSize: 11, color: Color(0xFF718682)),
+          ),
+        ],
+      ),
+    ],
+  ),
+),
       body: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
         child: Column(
