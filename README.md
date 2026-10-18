@@ -1,68 +1,70 @@
 # Sick-bae
 
-## GitHub Repository
-https://github.com/gDiva-blip/Sick-bae
-
-## Demo & Download
-**Build Status:** Ready for APK compilation
-
-To get the executable demo:
-1. Clone the repository
-2. Run: `flutter build apk --release`
-3. APK location: `build/app/outputs/flutter-app.apk`
-4. Install on Android device or emulator
+## Demo 
+Try the app
+Live demo:https://gdiva-blip.github.io/Sick-bae/
 
 ## About
-Sick Bay is a healthcare support application designed to make it easier for users to access basic health information and get guidance when they are feeling unwell.
+Sick Bae is a healthcare support app I'm working on with students on my mind. The idea was inspired by my school's sick bay and the experiences of students who have to balance schoolwork, classes and other responsibilities while also dealing with health concerns.
+Sometimes, a student may feel unwell but be unsure about what to do. Other times, students visit the school nurse for concerns that could first benefit from basic health guidance. I also thought about students who feel shy or uncomfortable asking for help when something is wrong.
+
+I wanted to create something that could make getting basic health information easier and help students know when they need to seek further assistance.
+Sick Bae is not meant to replace a school nurse or other healthcare professional. Instead, it provides basic guidance while encouraging students to seek professional help whenever necessary.
 
 ### Features
 - **Symptom Checker**: Input symptoms and receive health guidance
-- **World Clock**: Digital clock displaying multiple time zones (New York, London, Tokyo, Sydney, Dubai, Los Angeles)
-- **Material Design 3 UI**: Modern, responsive interface
-- **Real-time Updates**: Clock updates every second
+- **Get help Section** Consult and get help from any adult, parent, school nurse or any medical practioner if things escalate
 
-## Technology Stack
-- **Framework**: Flutter (Dart)
-- **State Management**: Provider
-- **Timezone Support**: timezone & intl packages
-- **UI**: Material Design 3
+  
 
 ## Usage
-1. Open the Sick Bay application
-2. Navigate through the home screen to access health-support features:
-   - Enter or select symptoms you're experiencing
-   - Review health guidance provided
-   - Follow recommended next steps
-3. Use the World Clock tab to see time in different zones
-4. Use the app as a general health-support tool and not as a replacement for professional medical diagnosis or treatment
+Describe what's going on. A student can describe their symptoms or explain what they are experiencing in their own words on the What's going on section or just explore an already existing symptom.
 
-## Build Instructions
-See [BUILD_DEPLOYMENT_GUIDE.md](BUILD_DEPLOYMENT_GUIDE.md) or [QUICK_BUILD.md](QUICK_BUILD.md)
+Get relevant guidance. The app helps the student access health information and recommendations related to their concern on the get help section.
 
-### Quick Build
-```bash
-flutter clean
+Understand what to do next. The guidance can help the student consider appropriate next steps instead of being left unsure about what to do.
+
+Seek further help when needed. If a concern requires additional attention, the student should 
+contact the school nurse or another qualified healthcare professional.
+
+
+Built with:
+Flutter-for building the app
+Dart-the programming language used to develop it
+Provider-for managing the application state
+Material Design-for the app's interface components
+
+Getting Started
+
+To run the project locally, you will need Flutter and Dart installed.
+
+Clone the repository:Getting Started
+
+To run the project locally, you will need Flutter and Dart installed.
+
+Clone the repository:
+
+git clone https://github.com/gDiva-blip/Sick-bae.git
+cd Sick-bae
+
+Install the project dependencies:
+
 flutter pub get
-flutter build apk --release
-```
 
-## Installation
-- Android: Install the generated APK on any Android device (min SDK: 21)
-- Can also be built for iOS, Web, Windows, and macOS
+Run the application on a supported device or emulator:
 
-## Requirements
-- Flutter SDK 3.0.0 or higher
-- Dart SDK 3.0.0+
-- Android SDK (for Android builds)
+flutter run
+
+To build the web version:
+
+flutter build web --release --base-href "/Sick-bae/"
+
+
+
+Health disclaimer
+ The app offers general health information guidance not a medical diagnosis or treatment. It's      like a first aid kit for information.
 
 ## Development
-```bash
-flutter run              # Run in debug mode
-flutter analyze         # Check code quality
-flutter test           # Run tests
-flutter run --release  # Run in release mode
-```
+I would like to keep improving Sick Bae so that it becomes more useful and accessible to students. One area I am interested in developing further is making it easier for students to reach appropriate health personnel when they need additional help.
 
----
-
-**Status:** Ready for compilation and distribution ✅
+My goal is to build something that responds to students' needs and makes seeking health guidance feel less intimidating.
