@@ -18,6 +18,7 @@ class SickBayApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SymptomProvider()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Sick Bay',
         theme: ThemeData(
           useMaterial3: true,
