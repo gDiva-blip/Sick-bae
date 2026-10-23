@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/symptom_provider.dart';
 import '../data/health_database.dart';
 import 'symptom_details_screen.dart';
 import 'health_guidance_screen.dart';
+import 'get_help_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -19,6 +21,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<String> _filteredSymptoms = [];
 
+  static const Color _background = Color(0xFFF6FBF8);
+  static const Color _darkGreen = Color(0xFF23413D);
+  static const Color _mutedGreen = Color(0xFF526A65);
+  static const Color _peach = Color(0xFFFFE1D5);
+  static const Color _peachDark = Color(0xFF8A3F2B);
+  static const Color _softGreen = Color(0xFFE4F3F0);
+
   @override
   void initState() {
     super.initState();
@@ -27,16 +36,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _filterSymptoms(String query) {
     setState(() {
-      if (query.isEmpty) {
-        _filteredSymptoms = HealthDatabase.getAllSymptoms();
-      } else {
-        _filteredSymptoms = HealthDatabase.getAllSymptoms()
-            .where(
-              (symptom) =>
-                  symptom.toLowerCase().contains(query.toLowerCase()),
-            )
-            .toList();
-      }
+      _filteredSymptoms = HealthDatabase.getAllSymptoms()
+          .where(
+            (symptom) =>
+                symptom.toLowerCase().contains(query.trim().toLowerCase()),
+          )
+          .toList();
     });
   }
 
@@ -46,7 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (description.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Please describe what you are experiencing first.'),
+          content: Text('Please describe how you are feeling first.'),
+          behavior: SnackBarBehavior.floating,
         ),
       );
       return;
@@ -62,92 +68,185 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void _openGetHelp() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const GetHelpScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final colors = theme.colorScheme;
+    final colors = Theme.of(context).colorScheme;
 
     return Scaffold(
+      backgroundColor: _background,
       appBar: AppBar(
-  backgroundColor: const Color(0xFFF6FBF8),
-  foregroundColor: const Color(0xFF153E3A),
-  elevation: 0,
-  centerTitle: false,
-  title: Row(
-    children: [
-      Container(
-        width: 42,
-        height: 42,
-        decoration: BoxDecoration(
-          color: const Color(0xFFFFE1D5),
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: const Icon(
-          Icons.heart_broken_rounded,
-          color: Color(0xFFE77B63),
+        backgroundColor: _background,
+        foregroundColor: _darkGreen,
+        elevation: 0,
+        title: const Row(
+          children: [
+            DecoratedBox(
+              decoration: BoxDecoration(
+                color: _peach,
+                borderRadius: BorderRadius.all(Radius.circular(14)),
+              ),
+              child: SizedBox(
+                width: 44,
+                height: 44,
+                child: Icon(
+                  Icons.favorite_rounded,
+                  color: _peachDark,
+                  size: 26,
+                ),
+              ),
+            ),
+            SizedBox(width: 12),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Sick Bae',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20,
+                    color: _darkGreen,
+                  ),
+                ),
+                Text(
+                  'Your health, with a little care',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: _mutedGreen,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
-      const SizedBox(width: 12),
-      const Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Text(
-            'Sick Bae',
-            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 19),
-          ),
-          Text(
-            'your health, with a little care',
-            style: TextStyle(fontSize: 11, color: Color(0xFF718682)),
-          ),
-        ],
-      ),
-    ],
-  ),
-),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.fromLTRB(16, 12, 16, 24),
+        padding: const EdgeInsets.fromLTRB(16, 8, 16, 28),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // IMPORTANT MEDICAL DISCLAIMER — deliberately placed first.
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(18),
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFE8E4),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: const Color(0xFFB83A32),
+                  width: 2,
+                ),
+              ),
+              child: const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.warning_rounded,
+                        color: Color(0xFF9F2924),
+                        size: 29,
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          'IMPORTANT MEDICAL DISCLAIMER',
+                          style: TextStyle(
+                            color: Color(0xFF8D211D),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: 0.3,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'SICK BAE DOES NOT DIAGNOSE ILLNESSES OR REPLACE A '
+                    'DOCTOR OR OTHER QUALIFIED HEALTHCARE PROFESSIONAL.',
+                    style: TextStyle(
+                      color: Color(0xFF702521),
+                      fontSize: 14,
+                      fontWeight: FontWeight.w800,
+                      height: 1.5,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'The information in this app is general guidance only. '
+                    'If you feel seriously unwell, your symptoms are getting '
+                    'worse, or you are worried, tell a trusted adult and seek '
+                    'appropriate medical care.',
+                    style: TextStyle(
+                      color: Color(0xFF702521),
+                      fontSize: 14,
+                      height: 1.5,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 18),
+
+            // Welcome section.
             Container(
               width: double.infinity,
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: colors.primaryContainer,
+                gradient: const LinearGradient(
+                  colors: [
+                    Color(0xFFE4F3F0),
+                    Color(0xFFF0F8F5),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Row(
+              child: const Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 28,
-                    backgroundColor: colors.surface,
+                    radius: 27,
+                    backgroundColor: Colors.white,
                     child: Icon(
-                      Icons.health_and_safety,
+                      Icons.health_and_safety_rounded,
                       size: 30,
-                      color: colors.primary,
+                      color: Color(0xFF438F84),
                     ),
                   ),
-                  const SizedBox(width: 16),
-                  const Expanded(
+                  SizedBox(width: 14),
+                  Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Welcome to Sick Bay',
+                          'Welcome to Sick Bae',
                           style: TextStyle(
-                            fontSize: 23,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF23413D),
+                            fontSize: 22,
+                            fontWeight: FontWeight.w800,
+                            color: _darkGreen,
                           ),
                         ),
-                        SizedBox(height: 5),
+                        SizedBox(height: 7),
                         Text(
-                          'A calm place to describe how you feel and explore general health guidance.',
+                          'A calm place to describe how you feel, explore '
+                          'common symptoms, and find out where to get support.',
                           style: TextStyle(
                             fontSize: 14,
-                            color: Color(0xFF35514D),
-                            height: 1.4,
+                            height: 1.5,
+                            color: _darkGreen,
                           ),
                         ),
                       ],
@@ -157,204 +256,42 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 26),
 
             const Text(
               'How are you feeling?',
               style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF23413D),
+                fontSize: 22,
+                fontWeight: FontWeight.w800,
+                color: _darkGreen,
               ),
             ),
-
             const SizedBox(height: 6),
-
             const Text(
               'Describe what you are experiencing in your own words.',
               style: TextStyle(
                 fontSize: 15,
-                color: Color(0xFF52615F),
+                height: 1.5,
+                color: _mutedGreen,
               ),
             ),
-
             const SizedBox(height: 14),
 
             Card(
+              color: Colors.white,
+              elevation: 1,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+                side: const BorderSide(color: Color(0xFFDCEAE5)),
+              ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   children: [
                     TextField(
                       controller: _descriptionController,
-                      maxLines: 6,
+                      maxLines: 5,
+                      textCapitalization: TextCapitalization.sentences,
                       decoration: InputDecoration(
                         hintText:
-                            'For example: I have a headache and feel tired...',
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.only(bottom: 80),
-                          child: Icon(Icons.edit_note),
-                        ),
-                        filled: true,
-                        fillColor: const Color(0xFFF7FBFA),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 14),
-
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: _getHealthGuidance,
-                        icon: const Icon(Icons.health_and_safety),
-                        label: const Text(
-                          'Get General Guidance',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: colors.primary,
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 15),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 28),
-
-            Row(
-              children: [
-                const Expanded(
-                  child: Text(
-                    'Explore Symptoms',
-                    style: TextStyle(
-                      fontSize: 21,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF23413D),
-                    ),
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFB38A),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(
-                    Icons.touch_app,
-                    color: Color(0xFF6E3D2A),
-                  ),
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 6),
-
-            const Text(
-              'Tap a symptom to explore more information.',
-              style: TextStyle(
-                fontSize: 15,
-                color: Color(0xFF52615F),
-              ),
-            ),
-
-            const SizedBox(height: 14),
-
-            TextField(
-              controller: _searchController,
-              onChanged: _filterSymptoms,
-              decoration: InputDecoration(
-                hintText: 'Search symptoms...',
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 16),
-
-            ..._filteredSymptoms.map((symptom) {
-              return Card(
-                margin: const EdgeInsets.only(bottom: 10),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () {
-                    context.read<SymptomProvider>().searchSymptom(symptom);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) =>
-                            const SymptomDetailsScreen(),
-                      ),
-                    );
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 15,
-                    ),
-                    child: Row(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.all(9),
-                          decoration: BoxDecoration(
-                            color: colors.primaryContainer,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Icon(
-                            Icons.medical_information_outlined,
-                            color: colors.primary,
-                          ),
-                        ),
-                        const SizedBox(width: 13),
-                        Expanded(
-                          child: Text(
-                            symptom.toUpperCase(),
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF263D3A),
-                            ),
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          size: 17,
-                          color: colors.primary,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              );
-            }),
-          ],
-        ),
-      ),
-    );
-  }
-
-  @override
-  void dispose() {
-    _descriptionController.dispose();
-    _searchController.dispose();
-    super.dispose();
-  }
-}
+                            'For example:
